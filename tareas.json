@@ -1,0 +1,12 @@
+[
+    {"text": "Ir de compras al supermercado", "completed": false},
+    {"text": "Limpiar la casa", "completed": false},
+    {"text": "Terminar la tarea", "completed": true},
+    {"text": "Llamar a mamá", "completed": false},
+    {"text": "Sacar la basura", "completed": true},
+    {"text": "Pasear al perro", "completed": false},
+    {"text": "Hacer la colada", "completed": true},
+    {"text": "Regar las plantas", "completed": false},
+    {"text": "Hacer ejercicio", "completed": true},
+    {"text": "Cocinar la cena", "completed": false}
+]

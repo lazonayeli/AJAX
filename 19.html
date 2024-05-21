@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        body {
+            background-color: #f0f4f7; 
+            color: #333; 
+        }
+        .container {
+            background-color: #ae89c0; 
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        h1 {
+            color: #7c0a99;
+        }
+        .task-completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4 text-center">Lista de Tareas</h1>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="task-input" placeholder="Agregar nueva tarea">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="add-task">Agregar</button>
+            </div>
+        </div>
+        <ul class="list-group" id="task-list">
+            
+        </ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            
+            loadTasks();
+
+            $('#add-task').on('click', function() {
+                var taskText = $('#task-input').val().trim();
+                if (taskText !== '') {
+                    addTask(taskText);
+                    $('#task-input').val('');
+                }
+            });
+
+            $(document).on('click', '.task-item', function() {
+                $(this).toggleClass('task-completed');
+            });
+
+            $(document).on('click', '.delete-task', function() {
+                $(this).closest('.list-group-item').remove();
+            });
+
+            function loadTasks() {
+                $.ajax({
+                    url: 'tareas.json', 
+                    dataType: 'json',
+                    success: function(data) {
+                        data.forEach(function(task) {
+                            addTask(task.text, task.completed);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar las tareas:', error);
+                    }
+                });
+            }
+
+            function addTask(taskText, completed = false) {
+                var taskList = $('#task-list');
+                var taskClass = completed ? 'task-completed' : '';
+                var taskStatus = completed ? 'Completada' : 'Pendiente';
+                var taskItem = `
+                    <li class="list-group-item task-item ${taskClass}">
+                        <span>${taskText} (${taskStatus})</span>
+                        <button type="button" class="close delete-task" aria-label="Eliminar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </li>
+                `;
+                taskList.append(taskItem);
+            }
+        });
+    </script>
+</body>
+</html>
